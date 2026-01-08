@@ -26,7 +26,7 @@ pip install matplotlib numpy scipy
 Run Occam on a single Python script. By default, it generates random integer 
 inputs.
 
-```bash
+```sh
 python3 scanner.py my_script.py --max_n 10000
 ```
 
@@ -41,7 +41,7 @@ python3 scanner.py my_script.py --max_n 10000
 Pit multiple algorithms against each other. See exactly where one solution 
 crushes the other one.
 
-```bash
+```sh
 python3 scanner.py solution_v1.py solution_v2.py --type list --max_n 50000 --output comparison.png
 ```
 
@@ -51,7 +51,7 @@ Your code works on random data, but does it break under pressure? Occam
 generates hostile patterns to expose weak points (like Quicksort's 
 worst case).
 
-```bash
+```sh
 # Test strictly sorted inputs (often the worst case for partition logic)
 python3 scanner.py solution.py --type list --pattern sorted
 
@@ -65,7 +65,7 @@ Use the `--dump` flag to see what the Python interpreter is actually doing.
 This reveals the "Interpreter Tax"—why a "clean" Python one-liner might be 
 slower than a verbose loop.
 
-```bash
+```sh
 python3 scanner.py solution.py --dump
 ```
 

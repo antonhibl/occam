@@ -109,11 +109,12 @@ class Solution:
 
 ## Reading the Charts
 
-* **Time (Left Graph):**
+Time (Left Graph):
 * **Flat Line:** O(Log(N)) or O(1).
 * **Straight Diagonal:** O(N) or Polynomial.
 * **J-Curve:** Exponential or Factorial.
-* **Memory (Right Graph):**
+
+Memory (Right Graph):
 * **Sawtooth Pattern:** Unstable memory usage, usually caused by **Recursive 
                     Slicing** (creating copies of lists, then freeing them).
 * **Flat Line:** O(1) space.

@@ -106,9 +106,36 @@ class ComplexityAnalyzer:
         print(f"Loaded {len(words)} inputs. Vocab size: {len(self.vocab)}")
     def generate_input(self, n, input_type, pattern='random'):
         data = None
-        if input_type == 'int': data = n
+        if input_type == 'error_nums':
+            base = list(range(1, n + 1))
+            if n > 1:
+                missing_idx = random.randint(0, n - 1)
+                dup_source_idx = missing_idx
+                while dup_source_idx == missing_idx:
+                    dup_source_idx = random.randint(0, n - 1)
+                base[missing_idx] = base[dup_source_idx]
+            if pattern == 'sorted': 
+                base.sort()
+            elif pattern == 'reverse': 
+                base.sort(reverse=True)
+            elif pattern == 'interleaved':
+                base.sort()
+                half = len(base) // 2
+                interleaved = []
+                for i in range(half):
+                    interleaved.append(base[i])
+                    interleaved.append(base[-(i+1)])
+                if len(base) % 2 != 0: 
+                    interleaved.append(base[half])
+                base = interleaved
+            elif pattern == 'random': 
+                random.shuffle(base)
+            data = base
+        elif input_type == 'int': 
+            data = n
         elif input_type == 'list':
-            if pattern == 'identical': data = [random.randint(0, 100)] * n
+            if pattern == 'identical': 
+                data = [random.randint(0, 100)] * n
             else:
                 data = [random.randint(0, 10000) for _ in range(n)]
                 if pattern == 'sorted': data.sort()
@@ -123,10 +150,14 @@ class ComplexityAnalyzer:
                 elif pattern == 'reverse': chars.sort(reverse=True)
                 data = "".join(chars)
         elif input_type == 'file':
-            if n in self.wordlist_data: data = random.choice(self.wordlist_data[n])
-            elif self.vocab: data = "".join(random.choices(self.vocab, k=n))
-            else: raise ValueError("Wordlist empty.")
-        else: raise ValueError(f"Unknown input type: {input_type}")
+            if n in self.wordlist_data: 
+                data = random.choice(self.wordlist_data[n])
+            elif self.vocab: 
+                data = "".join(random.choices(self.vocab, k=n))
+            else: 
+                raise ValueError("Wordlist empty.")
+        else: 
+            raise ValueError(f"Unknown input type: {input_type}")
         return data
     def analyze_function(self, func_wrapper, input_type, pattern, max_n=5000):
         results = []
@@ -255,8 +286,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Analyze Time/Space Complexity of Python scripts.")
     parser.add_argument("files", nargs='+', help="List of Python scripts to analyze")
     parser.add_argument("--wordlist", help="Path to input wordlist file")
-    parser.add_argument("--type", choices=['int', 'list', 'string'], default='int', help="Input data type")
-    parser.add_argument("--pattern", choices=['random', 'sorted', 'reverse', 'identical'], default='random', help="Data pattern for torture testing")
+    parser.add_argument("--type", choices=['int', 'list', 'string', 'error_nums'], default='int', help="Input data type")
+    parser.add_argument("--pattern", choices=['random', 'sorted', 'reverse', 'identical', 'interleaved'], default='random', help="Data pattern for torture testing")
     parser.add_argument("--max_n", type=int, default=5000, help="Maximum input size (N)")
     parser.add_argument("--output", "-o", help="Custom output filename for the graph")
     parser.add_argument("--dump", action="store_true", help="Dump full bytecode disassembly")

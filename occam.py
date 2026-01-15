@@ -355,7 +355,7 @@ if __name__ == "__main__":
         if func_to_run:
             CodeInspector.analyze(func_to_inspect, show_bytecode=args.dump)
             res = analyzer.analyze_function(func_to_run, active_type, args.pattern, args.max_n)
-            all_results[os.path.basename(filepath)] = res
+            all_results[filepath] = res
         else:
             print(f"Skipping {filepath}: No valid entry point found.")
     if all_results:
